@@ -1,3 +1,32 @@
+const { createFakeSong, createFakeSongs } = require("./songs"); // This imports two functions createFakeSong and createFakeSongs from the songs.js file. These functions are responsible for generating fake song data.
+const { writeJSONFile, readJSONFile } = require("./helpers"); // This imports two utility functions writeJSONFile and readJSONFile from the helpers.js file. These functions handle reading from and writing to JSON files.
+
+function run() {
+  // Reading existing playlist data from 'playlist.json' file or initializing as an empty array. 
+  const playlist = readJSONFile('./data', 'playlist.json') || []; //readJSONFile('./data', 'playlist.json'): This function attempts to read the contents of the playlist.json file located in the ./data directory. If the file exists and contains valid JSON data, it returns that data. If the file doesn't exist or is empty, it returns an empty array ([]).
+
+  // Determining the number of songs to create based on the command-line argument (if provided). 
+  const numSongs = process.argv[3] ? parseInt(process.argv[3], 10) : 1; //process.argv[3]: Retrieves the command-line argument at index 3. This is typically used to pass parameters to Node.js scripts when executing them from the command line. parseInt(process.argv[3], 10): Converts the command-line argument to an integer. If no argument is provided (process.argv[3] is falsy), it defaults to creating 1 song (1).
+
+  //Generating new songs based on the number specified in numSongs. 
+  const newSongs = numSongs === 1 ? [createFakeSong()] : createFakeSongs(numSongs) //If numSongs is 1, it calls createFakeSong() once and wraps the result in an array ([createFakeSong()]). If numSongs is greater than 1, it calls createFakeSongs(numSongs) to generate an array of numSongs fake songs.
+
+  // Adding new songs to the existing playlist array. 
+  playlist.push(...newSongs); //Adds the newly generated songs (newSongs) to the end of the playlist array using the spread operator (...).
+
+  // Writing the updated playlist array to 'playlist.json' file. 
+  writeJSONFile('./data', 'playlist.json', playlist); //Saves the updated playlist array to the playlist.json file located in the ./data directory using the writeJSONFile function imported from helpers.js
+
+  // Logging the updated playlist to the console. 
+  console.log(playlist); //Outputs the updated playlist array to the console, displaying the new songs added.
+}
+
+run(); //Executes the run() function immediately when the script (index.js) is run.
+
+
+//This script demonstrates a basic flow for generating fake song data, updating a playlist stored in a JSON file (playlist.json), and handling command-line arguments to specify how many new songs to create. It utilizes functions from separate files (songs.js and helpers.js) to maintain modularity and separation of concerns.
+
+/*
 const { createFakeSong, createFakeSongs } = require("./songs");
 const { writeJSONFile, readJSONFile } = require("./helpers");
 
@@ -11,6 +40,50 @@ function run() {
 }
 
 run();
+
+
+
+*/
+
+//This script demonstrates a basic flow for generating fake song data, updating a playlist stored in a JSON file (playlist.json), and handling command-line arguments to specify how many new songs to create. It utilizes functions from separate files (songs.js and helpers.js) to maintain modularity and separation of concerns.
+
+
+
+/*
+// Importing functions from songs.js and helpers.js
+const { createFakeSong, createFakeSongs } = require("./songs");
+const { writeJSONFile, readJSONFile } = require("./helpers");
+
+// Function to run the application
+function run() {
+  // Reading existing playlist data from 'playlist.json' file or initializing as an empty array
+  const playlist = readJSONFile('./data', 'playlist.json') || [];
+
+  // Determining the number of songs to create based on the command-line argument (if provided)
+  const numSongs = process.argv[3] ? parseInt(process.argv[3], 10) : 1;
+
+  // Generating new songs based on the number specified in numSongs
+  const newSongs = numSongs === 1 ? [createFakeSong()] : createFakeSongs(numSongs);
+
+  // Adding new songs to the existing playlist array
+  playlist.push(...newSongs);
+
+  // Writing the updated playlist array to 'playlist.json' file
+  writeJSONFile('./data', 'playlist.json', playlist);
+
+  // Logging the updated playlist to the console
+  console.log(playlist);
+}
+
+// Calling the run function to start the application
+run();
+
+
+
+
+*/
+
+
 
 
 /*
